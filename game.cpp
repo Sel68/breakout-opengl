@@ -76,7 +76,7 @@ void Game::Init(){
     Levels.push_back(two);
     Levels.push_back(three);
     Levels.push_back(four);
-    Level = 0;
+    Level = 2;
     
     //load player
     glm::vec2 playerPos = glm::vec2(Width / 2.0f - PLAYER_SIZE.x / 2.0f, Height - PLAYER_SIZE.y);
