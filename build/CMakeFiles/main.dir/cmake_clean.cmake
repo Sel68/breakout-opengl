@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/glad.c.o.d"
   "CMakeFiles/main.dir/main.cpp.o"
   "CMakeFiles/main.dir/main.cpp.o.d"
+  "CMakeFiles/main.dir/particle_generator.cpp.o"
+  "CMakeFiles/main.dir/particle_generator.cpp.o.d"
   "CMakeFiles/main.dir/resource_manager.cpp.o"
   "CMakeFiles/main.dir/resource_manager.cpp.o.d"
   "CMakeFiles/main.dir/shader.cpp.o"

@@ -273,6 +273,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+particle_generator.o: particle_generator.cpp.o
+.PHONY : particle_generator.o
+
+# target to build an object file
+particle_generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/particle_generator.cpp.o
+.PHONY : particle_generator.cpp.o
+
+particle_generator.i: particle_generator.cpp.i
+.PHONY : particle_generator.i
+
+# target to preprocess a source file
+particle_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/particle_generator.cpp.i
+.PHONY : particle_generator.cpp.i
+
+particle_generator.s: particle_generator.cpp.s
+.PHONY : particle_generator.s
+
+# target to generate assembly for a file
+particle_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/particle_generator.cpp.s
+.PHONY : particle_generator.cpp.s
+
 resource_manager.o: resource_manager.cpp.o
 .PHONY : resource_manager.o
 
@@ -396,6 +420,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... particle_generator.o"
+	@echo "... particle_generator.i"
+	@echo "... particle_generator.s"
 	@echo "... resource_manager.o"
 	@echo "... resource_manager.i"
 	@echo "... resource_manager.s"

@@ -46,11 +46,15 @@ Game::~Game()
 void Game::Init(){
     //loading shaders
     ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.fs", nullptr, "sprite");
+    ResourceManager::LoadShader("shaders/particle.vs", "shaders/particle.fs", nullptr, "particle");
 
     //shader config
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width), static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
     ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+
+    ResourceManager::GetShader("particle").Use().SetInteger("sprite", 0);
+    ResourceManager::GetShader("particle").SetMatrix4("projection", projection);
 
     Shader tmp = ResourceManager::GetShader("sprite");
     Renderer = new SpriteRenderer(tmp);
@@ -61,6 +65,7 @@ void Game::Init(){
     ResourceManager::LoadTexture("textures/block.png", false, "block");
     ResourceManager::LoadTexture("textures/block_solid.png", false, "block_solid");
     ResourceManager::LoadTexture("textures/paddle.png", true, "paddle");
+    ResourceManager::LoadTexture("textures/particle.png", true, "particle");
 
     //load levels
     GameLevel one; one.Load("levels/one.lvl", Width, Height/2);
@@ -82,6 +87,11 @@ void Game::Init(){
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
     std::cout << "GAME INITIALISED\n";
     this->State = GAME_ACTIVE;
+
+    //Particle gen
+    Particles = new ParticleGenerator (ResourceManager::GetShader("particle"),
+        ResourceManager::GetTexture("particle"), 1500
+    );
 }
 
 void Game::Render()
@@ -92,6 +102,7 @@ void Game::Render()
         
         Levels[Level].Draw(*Renderer);
         Player->Draw(*Renderer);
+        Particles->Draw();
         Ball->Draw(*Renderer);
     }
 }
@@ -122,6 +133,8 @@ void Game::Update(float dt){
     if (Ball->Position.y >= Height){
         ResetLevel(); ResetPlayer();
     }
+
+    Particles->Update(dt, *Ball, 2, glm::vec2(Ball->Radius/2.0f));
 }
 
 
