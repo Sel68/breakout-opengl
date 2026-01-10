@@ -45,6 +45,8 @@ private:
     unsigned int MSFBO, FBO; // MSFBO = Multisampled FBO. FBO is regular, used for blitting MS color-buffer to texture
     unsigned int RBO; // RBO is used for multisampled color buffer
     unsigned int VAO;
+
+    GLint start_viewport[4];
     // initialize quad for rendering postprocessing texture
     void initRenderData();
 };

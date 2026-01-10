@@ -80,11 +80,14 @@ int main(int argc, char *argv[])
         glClear(GL_COLOR_BUFFER_BIT);
         Breakout.Render();
 
+        int scrWidth, scrHeight;
+        glfwGetFramebufferSize(window, &scrWidth, &scrHeight);
+        glViewport(0, 0, scrWidth, scrHeight);
+
         glfwSwapBuffers(window);
     }
 
     // delete all resources as loaded using the resource manager
-    // ---------------------------------------------------------
     ResourceManager::Clear();
 
     glfwTerminate();

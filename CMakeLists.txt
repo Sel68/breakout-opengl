@@ -19,8 +19,8 @@ add_executable(main
     game_level.cpp
     sprite_renderer.cpp
     particle_generator.cpp
-    # post_processor.cpp
-    # power_up.cpp
+    post_processor.cpp
+    power_up.cpp
     # text_renderer.cpp
 )
 
