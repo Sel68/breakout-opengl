@@ -87,8 +87,8 @@ void Game::Init(){
     Levels.push_back(two);
     Levels.push_back(three);
     Levels.push_back(four);
-    Level = 2;
-    
+    Level = 0;
+
     //load player
     glm::vec2 playerPos = glm::vec2(Width / 2.0f - PLAYER_SIZE.x / 2.0f, Height - PLAYER_SIZE.y);
     Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
@@ -143,6 +143,11 @@ void Game::Render()
     if (this->State == GAME_MENU) {
         Text->RenderText("Press ENTER to start", 250.0f, this->Height / 2.0f, 1.0f);
         Text->RenderText("Press W or S to select level", 245.0f, this->Height / 2.0f + 20.0f, 0.75f);
+        std::string levelText = "Selected Level: " + std::to_string(this->Level + 1);
+        float textWidth = Text->GetTextWidth(levelText, 1.0f);
+        Text->RenderText(levelText, 
+            (Width/2.0f) - (textWidth/2.0f), this->Height / 2.0f - 50.0f, 1.0f, 
+            glm::vec3(0.0f, 1.0f, 0.0f));
     }
     if (State == GAME_WIN) {
         Text->RenderText("You WON!!!", 320.0, Height / 2 - 20.0,
@@ -163,35 +168,6 @@ void Game::Render()
 }
 
 void Game::ProcessInput(float dt){
-    CheatTimer += dt;
-    if (CheatTimer > 0.8f) CheatBuffer = "";
-
-    for (int k = GLFW_KEY_A; k<= GLFW_KEY_Z; k++){
-        if (Keys[k] && !KeysProcessed[k]){
-            CheatBuffer += (char)(k-GLFW_KEY_A) + 'a';
-            CheatTimer = 0.0f; KeysProcessed[k] = true;
-        }
-    }
-    for (int k = GLFW_KEY_0; k <= GLFW_KEY_9; k++) {
-        if (Keys[k] && !KeysProcessed[k]) {
-            CheatBuffer += (char)(k - GLFW_KEY_0 + '0');
-            CheatTimer = 0.0f;
-            KeysProcessed[k] = true;
-        }
-    }
-    
-    if (CheatBuffer.find("livelong") != std::string::npos) {
-        this->Lives = 999;
-        sound.play("powerup"); // Audio feedback
-        CheatBuffer = "";
-    }
-    
-    if (CheatBuffer.find("8inch") != std::string::npos) {
-        Player->Size.x = (float)this->Width;
-        Player->Position.x = 0.0f;
-        sound.play("powerup");
-        CheatBuffer = "";
-    }
 
     if (State == GAME_ACTIVE){
         float velocity = PLAYER_VELOCITY * dt;
@@ -217,11 +193,16 @@ void Game::ProcessInput(float dt){
 
     if (State == GAME_MENU){
         if (Keys[GLFW_KEY_ENTER] && !KeysProcessed[GLFW_KEY_ENTER]){
-            State = GAME_ACTIVE; KeysProcessed[GLFW_KEY_END] = true;}
+            State = GAME_ACTIVE; KeysProcessed[GLFW_KEY_ENTER] = true;}
         if (Keys[GLFW_KEY_W] && !KeysProcessed[GLFW_KEY_W]){
-            Level = (Level + 1) % 4; KeysProcessed[GLFW_KEY_W] = true;}
+            Level = (Level + 1) % 4; 
+            ResetLevel(); ResetPlayer();
+            KeysProcessed[GLFW_KEY_W] = true;
+        }
         if (Keys[GLFW_KEY_S] && !KeysProcessed[GLFW_KEY_S]) {
-            Level = (Level -1)%4; KeysProcessed[GLFW_KEY_S] = true;
+            Level = (Level +3)%4;
+            ResetLevel(); ResetPlayer();
+            KeysProcessed[GLFW_KEY_S] = true;
         }
     }
 
@@ -237,6 +218,36 @@ void Game::ProcessInput(float dt){
             KeysProcessed[GLFW_KEY_P] = true;
             State = GAME_ACTIVE;
         }
+    }
+
+    CheatTimer += dt;
+    if (CheatTimer > 0.8f) CheatBuffer = "";
+
+    for (int k = GLFW_KEY_A; k<= GLFW_KEY_Z; k++){
+        if (Keys[k] && !KeysProcessed[k]){
+            CheatBuffer += (char)(k-GLFW_KEY_A) + 'a';
+            CheatTimer = 0.0f; KeysProcessed[k] = true;
+        }
+    }
+    for (int k = GLFW_KEY_0; k <= GLFW_KEY_9; k++) {
+        if (Keys[k] && !KeysProcessed[k]) {
+            CheatBuffer += (char)(k - GLFW_KEY_0 + '0');
+            CheatTimer = 0.0f;
+            KeysProcessed[k] = true;
+        }
+    }
+
+    if (CheatBuffer.find("livelong") != std::string::npos) {
+        this->Lives = 999;
+        sound.play("powerup"); // Audio feedback
+        CheatBuffer = "";
+    }
+    
+    if (CheatBuffer.find("8inch") != std::string::npos) {
+        Player->Size.x = (float)this->Width;
+        Player->Position.x = 0.0f;
+        sound.play("powerup");
+        CheatBuffer = "";
     }
 
 }
