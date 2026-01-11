@@ -285,6 +285,7 @@ main: CMakeFiles/main.dir/post_processor.cpp.o
 main: CMakeFiles/main.dir/power_up.cpp.o
 main: CMakeFiles/main.dir/build.make
 main: /usr/local/lib/libglfw3.a
+main: /usr/lib/x86_64-linux-gnu/libopenal.so
 main: /usr/lib/x86_64-linux-gnu/librt.a
 main: /usr/lib/x86_64-linux-gnu/libm.so
 main: CMakeFiles/main.dir/link.txt

@@ -4,8 +4,12 @@ project(OpenGLTest)
 set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 find_package(glfw3 3.3 REQUIRED)
+find_package(OpenAL REQUIRED)
+
 
 include_directories("${GLAD_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}")
+include_directories(${OPENAL_INCLUDE_DIR})
+
 
 add_executable(main 
     main.cpp 
@@ -21,11 +25,13 @@ add_executable(main
     particle_generator.cpp
     post_processor.cpp
     power_up.cpp
+    sound_manager.h
     # text_renderer.cpp
 )
 
-target_link_libraries(main PRIVATE glfw dl)
+target_link_libraries(main PRIVATE glfw ${OPENAL_LIBRARY} dl)
 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/textures" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/levels" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/shaders" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/sounds" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")

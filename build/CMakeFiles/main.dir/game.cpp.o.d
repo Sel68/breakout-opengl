@@ -418,4 +418,11 @@ CMakeFiles/main.dir/game.cpp.o: \
  /mnt/disk4/GitHub/breakout-opengl/particle_generator.h \
  /mnt/disk4/GitHub/breakout-opengl/post_processor.h \
  /mnt/disk4/GitHub/breakout-opengl/text_renderer.h \
- /usr/include/c++/11/iostream
+ /mnt/disk4/GitHub/breakout-opengl/sound_manager.h /usr/include/AL/al.h \
+ /usr/include/AL/alc.h /usr/include/c++/11/iostream \
+ /mnt/disk4/GitHub/breakout-opengl/dr_wav.h /usr/include/c++/11/stdlib.h \
+ /mnt/disk4/GitHub/breakout-opengl/dr_mp3.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/mm_malloc.h

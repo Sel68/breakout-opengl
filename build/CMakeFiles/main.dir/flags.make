@@ -5,13 +5,13 @@
 # compile CXX with /usr/bin/c++
 C_DEFINES = 
 
-C_INCLUDES = -I/mnt/disk4/GitHub/breakout-opengl/include -I/mnt/disk4/GitHub/breakout-opengl
+C_INCLUDES = -I/mnt/disk4/GitHub/breakout-opengl/include -I/mnt/disk4/GitHub/breakout-opengl -I/usr/include/AL
 
 C_FLAGS = 
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/disk4/GitHub/breakout-opengl/include -I/mnt/disk4/GitHub/breakout-opengl
+CXX_INCLUDES = -I/mnt/disk4/GitHub/breakout-opengl/include -I/mnt/disk4/GitHub/breakout-opengl -I/usr/include/AL
 
 CXX_FLAGS = 
 

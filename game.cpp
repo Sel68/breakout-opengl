@@ -7,6 +7,8 @@
 #include "post_processor.h"
 #include "text_renderer.h"
 
+#include "sound_manager.h"
+
 #include <iostream>
 
 // Game-related State data
@@ -16,6 +18,7 @@ BallObject        *Ball;
 ParticleGenerator *Particles;
 PostProcessor     *Effects;
 TextRenderer      *Text;
+SoundManager sound;
 
 float ShakeTime = 0.0f;
 
@@ -30,10 +33,8 @@ void ActivatePowerUp(PowerUp&);
 // BallObject *Ball;
 
 Game::Game(unsigned int width, unsigned int height) 
-    : State(GAME_MENU), Keys(), KeysProcessed(), Width(width), Height(height), Level(0), Lives(3)
-{ 
+    : State(GAME_MENU), Keys(), KeysProcessed(), Width(width), Height(height), Level(0), Lives(3){}
 
-}
 
 Game::~Game()
 {
@@ -44,8 +45,6 @@ Game::~Game()
     delete Effects;
     delete Text;
 }
-
-
 
 void Game::Init(){
     //loading shaders
@@ -103,6 +102,15 @@ void Game::Init(){
     );
 
     Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
+
+    //load sounds
+    sound.load("bleep1", "sounds/bleep.mp3");
+    sound.load("bleep2", "sounds/bleep.wav");
+    sound.load("background", "sounds/breakout.mp3");
+    sound.load("powerup", "sounds/powerup.wav");
+    sound.load("solid", "sounds/solid.wav");
+
+    sound.play("background", true);
     this->State = GAME_ACTIVE;
     std::cout << "GAME INITIALISED\n";
 
@@ -225,10 +233,12 @@ void Game::DoCollisions()
                 if (!box.IsSolid)
                 {
                     box.Destroyed = true; this->SpawnPowerUps(box);
+                    sound.play("bleep1");
                 }
                 else
                 {   // if block is solid, enable shake effect
                     ShakeTime = 0.05f; Effects->Shake = true;
+                    sound.play("solid");
                 }
                 // collision resolution
                 Direction dir = std::get<1>(collision);
@@ -271,6 +281,7 @@ void Game::DoCollisions()
 
             if (CheckCollision(*Player, powerUp))
             {	// collided with player, now activate powerup
+                sound.play("powerup");
                 ActivatePowerUp(powerUp);
                 powerUp.Destroyed = true;
                 powerUp.Activated = true;
@@ -280,8 +291,8 @@ void Game::DoCollisions()
 
     // and finally check collisions for player pad (unless stuck)
     Collision result = CheckCollision(*Ball, *Player);
-    if (!Ball->Stuck && std::get<0>(result))
-    {
+    if (!Ball->Stuck && std::get<0>(result)) {
+        sound.play("bleep2");
         // check where it hit the board, and change velocity based on where it hit the board
         float centerBoard = Player->Position.x + Player->Size.x / 2.0f;
         float distance = (Ball->Position.x + Ball->Radius) - centerBoard;
