@@ -21,6 +21,7 @@ TextRenderer      *Text;
 SoundManager sound;
 
 float ShakeTime = 0.0f;
+unsigned int FONT_SIZE = 24;
 
 void ActivatePowerUp(PowerUp&);
 
@@ -110,15 +111,19 @@ void Game::Init(){
     sound.load("powerup", "sounds/powerup.wav");
     sound.load("solid", "sounds/solid.wav");
 
+    Text = new TextRenderer(Width, Height);
+    Text->Load("fonts/ocraext.ttf", FONT_SIZE);
+
     sound.play("background", true);
-    this->State = GAME_ACTIVE;
+    this->State = GAME_MENU;
     std::cout << "GAME INITIALISED\n";
 
 }
 
 void Game::Render()
 {
-    if(State == GAME_ACTIVE){
+
+    if(State == GAME_ACTIVE || State == GAME_MENU || State == GAME_PAUSE){
         
         Effects->BeginRender();
 
@@ -131,10 +136,63 @@ void Game::Render()
 
         Effects->EndRender(); Effects->Render(glfwGetTime());
         for (PowerUp &p : PowerUps) if (!p.Destroyed) p.Draw(*Renderer);
+
+        std::stringstream ss; ss << Lives;
+        Text->RenderText("Lives:"+ss.str(), 5.0f, 5.0f, 1.0f);
     }
+    if (this->State == GAME_MENU) {
+        Text->RenderText("Press ENTER to start", 250.0f, this->Height / 2.0f, 1.0f);
+        Text->RenderText("Press W or S to select level", 245.0f, this->Height / 2.0f + 20.0f, 0.75f);
+    }
+    if (State == GAME_WIN) {
+        Text->RenderText("You WON!!!", 320.0, Height / 2 - 20.0,
+            1.0, glm::vec3(0.0, 1.0, 0.0));
+        Text->RenderText("Press ENTER to retry or ESC to quit", 130.0,
+            Height / 2, 1.0, glm::vec3(1.0, 1.0, 0.0));
+    }
+    if (State == GAME_PAUSE){
+        std::string txt = "PAUSED. Press P to resume";
+        float scale = 1.0f;
+        float textWidth = Text->GetTextWidth(txt, scale);
+        float xPos = (this->Width/2.0f) - (textWidth/2.0f); 
+        float yPos = (this->Height / 2.0f) - ((float)FONT_SIZE* scale / 2.0f);
+
+        Text->RenderText(txt, xPos, yPos, scale);
+    }
+
 }
 
 void Game::ProcessInput(float dt){
+    CheatTimer += dt;
+    if (CheatTimer > 0.8f) CheatBuffer = "";
+
+    for (int k = GLFW_KEY_A; k<= GLFW_KEY_Z; k++){
+        if (Keys[k] && !KeysProcessed[k]){
+            CheatBuffer += (char)(k-GLFW_KEY_A) + 'a';
+            CheatTimer = 0.0f; KeysProcessed[k] = true;
+        }
+    }
+    for (int k = GLFW_KEY_0; k <= GLFW_KEY_9; k++) {
+        if (Keys[k] && !KeysProcessed[k]) {
+            CheatBuffer += (char)(k - GLFW_KEY_0 + '0');
+            CheatTimer = 0.0f;
+            KeysProcessed[k] = true;
+        }
+    }
+    
+    if (CheatBuffer.find("livelong") != std::string::npos) {
+        this->Lives = 999;
+        sound.play("powerup"); // Audio feedback
+        CheatBuffer = "";
+    }
+    
+    if (CheatBuffer.find("8inch") != std::string::npos) {
+        Player->Size.x = (float)this->Width;
+        Player->Position.x = 0.0f;
+        sound.play("powerup");
+        CheatBuffer = "";
+    }
+
     if (State == GAME_ACTIVE){
         float velocity = PLAYER_VELOCITY * dt;
         if (Keys[GLFW_KEY_A]){
@@ -151,22 +209,60 @@ void Game::ProcessInput(float dt){
             }
         }
         if (Keys[GLFW_KEY_SPACE]) Ball->Stuck = false;
+
+        if (Keys[GLFW_KEY_P] && !KeysProcessed[GLFW_KEY_P]) {
+            State = GAME_PAUSE; KeysProcessed[GLFW_KEY_P] = true;
+        }
     }
+
+    if (State == GAME_MENU){
+        if (Keys[GLFW_KEY_ENTER] && !KeysProcessed[GLFW_KEY_ENTER]){
+            State = GAME_ACTIVE; KeysProcessed[GLFW_KEY_END] = true;}
+        if (Keys[GLFW_KEY_W] && !KeysProcessed[GLFW_KEY_W]){
+            Level = (Level + 1) % 4; KeysProcessed[GLFW_KEY_W] = true;}
+        if (Keys[GLFW_KEY_S] && !KeysProcessed[GLFW_KEY_S]) {
+            Level = (Level -1)%4; KeysProcessed[GLFW_KEY_S] = true;
+        }
+    }
+
+    if (State == GAME_WIN){
+        if (Keys[GLFW_KEY_ENTER]){
+            KeysProcessed[GLFW_KEY_ENTER] = true;
+            Effects->Chaos = false; State = GAME_MENU;
+        }
+    }
+
+    if (State == GAME_PAUSE){
+        if (Keys[GLFW_KEY_P] &&!KeysProcessed[GLFW_KEY_P]){
+            KeysProcessed[GLFW_KEY_P] = true;
+            State = GAME_ACTIVE;
+        }
+    }
+
 }
 
 void Game::Update(float dt){
-    Ball->Move(dt, Width);
-    DoCollisions();
-    this->UpdatePowerUps(dt);
 
-    if (Ball->Position.y >= Height){
-        ResetLevel(); ResetPlayer();
+    if (State == GAME_ACTIVE){
+        Ball->Move(dt, Width);
+        DoCollisions();
+        this->UpdatePowerUps(dt);
+    
+        if (State == GAME_ACTIVE && Levels[Level].IsCompleted()){
+            ResetLevel(); ResetPlayer(); Effects->Chaos = true; State = GAME_WIN;
+        }
+
+        if (Ball->Position.y >= Height){
+            if (--Lives == 0){ResetLevel(); State = GAME_MENU;}
+            ResetPlayer();
+        }
+
+        Particles->Update(dt, *Ball, 2, glm::vec2(Ball->Radius/2.0f));
+        if (ShakeTime>0.0f){
+            ShakeTime-=dt; if (ShakeTime<=0.0f) Effects->Shake = false;
+        }
     }
 
-    Particles->Update(dt, *Ball, 2, glm::vec2(Ball->Radius/2.0f));
-    if (ShakeTime>0.0f){
-        ShakeTime-=dt; if (ShakeTime<=0.0f) Effects->Shake = false;
-    }
 }
 
 Direction VectorDirection(glm::vec2 target){

@@ -21,7 +21,8 @@
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
-    GAME_WIN
+    GAME_WIN,
+    GAME_PAUSE
 };
 
 // Represents the four possible (collision) directions
@@ -58,6 +59,8 @@ public:
     std::vector<PowerUp>    PowerUps;
     unsigned int            Level;
     unsigned int            Lives;
+    std::string CheatBuffer = "";
+    float CheatTimer = 0.0f;
     // constructor/destructor
     Game(unsigned int width, unsigned int height);
     ~Game();

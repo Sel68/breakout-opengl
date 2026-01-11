@@ -23,6 +23,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/shader.cpp.o.d"
   "CMakeFiles/main.dir/sprite_renderer.cpp.o"
   "CMakeFiles/main.dir/sprite_renderer.cpp.o.d"
+  "CMakeFiles/main.dir/text_renderer.cpp.o"
+  "CMakeFiles/main.dir/text_renderer.cpp.o.d"
   "CMakeFiles/main.dir/texture.cpp.o"
   "CMakeFiles/main.dir/texture.cpp.o.d"
   "main"

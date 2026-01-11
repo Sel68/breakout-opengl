@@ -43,7 +43,8 @@ public:
     void Load(std::string font, unsigned int fontSize);
     // renders a string of text using the precompiled list of characters
     void RenderText(std::string text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f));
-private:
+    float GetTextWidth(std::string text, float scale);
+    private:
     // render state
     unsigned int VAO, VBO;
 };

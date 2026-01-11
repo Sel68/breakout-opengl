@@ -417,6 +417,30 @@ sprite_renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/sprite_renderer.cpp.s
 .PHONY : sprite_renderer.cpp.s
 
+text_renderer.o: text_renderer.cpp.o
+.PHONY : text_renderer.o
+
+# target to build an object file
+text_renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/text_renderer.cpp.o
+.PHONY : text_renderer.cpp.o
+
+text_renderer.i: text_renderer.cpp.i
+.PHONY : text_renderer.i
+
+# target to preprocess a source file
+text_renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/text_renderer.cpp.i
+.PHONY : text_renderer.cpp.i
+
+text_renderer.s: text_renderer.cpp.s
+.PHONY : text_renderer.s
+
+# target to generate assembly for a file
+text_renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/text_renderer.cpp.s
+.PHONY : text_renderer.cpp.s
+
 texture.o: texture.cpp.o
 .PHONY : texture.o
 
@@ -486,6 +510,9 @@ help:
 	@echo "... sprite_renderer.o"
 	@echo "... sprite_renderer.i"
 	@echo "... sprite_renderer.s"
+	@echo "... text_renderer.o"
+	@echo "... text_renderer.i"
+	@echo "... text_renderer.s"
 	@echo "... texture.o"
 	@echo "... texture.i"
 	@echo "... texture.s"

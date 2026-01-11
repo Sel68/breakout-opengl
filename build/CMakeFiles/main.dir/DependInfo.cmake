@@ -20,6 +20,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/mnt/disk4/GitHub/breakout-opengl/resource_manager.cpp" "CMakeFiles/main.dir/resource_manager.cpp.o" "gcc" "CMakeFiles/main.dir/resource_manager.cpp.o.d"
   "/mnt/disk4/GitHub/breakout-opengl/shader.cpp" "CMakeFiles/main.dir/shader.cpp.o" "gcc" "CMakeFiles/main.dir/shader.cpp.o.d"
   "/mnt/disk4/GitHub/breakout-opengl/sprite_renderer.cpp" "CMakeFiles/main.dir/sprite_renderer.cpp.o" "gcc" "CMakeFiles/main.dir/sprite_renderer.cpp.o.d"
+  "/mnt/disk4/GitHub/breakout-opengl/text_renderer.cpp" "CMakeFiles/main.dir/text_renderer.cpp.o" "gcc" "CMakeFiles/main.dir/text_renderer.cpp.o.d"
   "/mnt/disk4/GitHub/breakout-opengl/texture.cpp" "CMakeFiles/main.dir/texture.cpp.o" "gcc" "CMakeFiles/main.dir/texture.cpp.o.d"
   )
 
