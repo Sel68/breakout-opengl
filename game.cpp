@@ -70,7 +70,8 @@ void Game::Init(){
     ResourceManager::LoadTexture("textures/block.png", false, "block");
     ResourceManager::LoadTexture("textures/block_solid.png", false, "block_solid");
     ResourceManager::LoadTexture("textures/paddle.png", true, "paddle");
-    ResourceManager::LoadTexture("textures/particle.png", true, "particle");    
+    ResourceManager::LoadTexture("textures/particle.png", true, "particle");
+    ResourceManager::LoadTexture("textures/kanyewest.png", true, "kanye");    
     Texture2D tex_sticky = ResourceManager::LoadTexture("textures/powerup_sticky.png", true, "texsticky");
     Texture2D tex_speed = ResourceManager::LoadTexture("textures/powerup_speed.png", true, "texspeed");
     Texture2D tex_passthrough = ResourceManager::LoadTexture("textures/powerup_passthrough.png", true, "texpassthrough");
@@ -203,6 +204,13 @@ void Game::ProcessInput(float dt){
             Level = (Level +3)%4;
             ResetLevel(); ResetPlayer();
             KeysProcessed[GLFW_KEY_S] = true;
+        }
+
+        if (Keys[GLFW_KEY_Q] && !KeysProcessed[GLFW_KEY_Q]){
+            Texture2D texKanye = ResourceManager::GetTexture("kanye");
+            Texture2D texFace = ResourceManager::GetTexture("face");
+            if (Ball->Sprite.ID == texFace.ID) Ball->Sprite = texKanye;
+            else Ball->Sprite = texFace;
         }
     }
 
