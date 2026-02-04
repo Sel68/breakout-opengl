@@ -251,7 +251,7 @@ void Game::ProcessInput(float dt){
         CheatBuffer = "";
     }
     
-    if (CheatBuffer.find("8inch") != std::string::npos) {
+    if (CheatBuffer.find("bigbigbig") != std::string::npos) {
         Player->Size.x = (float)this->Width;
         Player->Position.x = 0.0f;
         sound.play("powerup");
