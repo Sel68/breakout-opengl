@@ -1,0 +1,1 @@
+add_library(particle_generator STATIC particle_generator.cpp)

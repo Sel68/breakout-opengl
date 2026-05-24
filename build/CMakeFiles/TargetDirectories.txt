@@ -1,3 +1,0 @@
-/mnt/disk4/GitHub/breakout-opengl/build/CMakeFiles/main.dir
-/mnt/disk4/GitHub/breakout-opengl/build/CMakeFiles/edit_cache.dir
-/mnt/disk4/GitHub/breakout-opengl/build/CMakeFiles/rebuild_cache.dir

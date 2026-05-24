@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.10)
 project(OpenGLTest)
 
 find_package(glfw3 3.3 REQUIRED)
@@ -7,37 +7,40 @@ find_package(Freetype REQUIRED)
 
 set(GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_executable(main 
-main.cpp 
-glad.c 
-shader.cpp 
-texture.cpp 
-resource_manager.cpp
-game.cpp
-ball_object.cpp
-game_object.cpp
-game_level.cpp
-sprite_renderer.cpp
-particle_generator.cpp
-post_processor.cpp
-power_up.cpp
-sound_manager.h
-text_renderer.cpp
-)
-
-target_include_directories(main PRIVATE 
-    "${GLAD_DIR}/include" 
+include_directories(
+    "${GLAD_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}"
     ${OPENAL_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ball_object"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game_level"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game_object"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/particle_generator"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/post_processor"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/power_up"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/resource_manager"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/shader"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/sprite_renderer"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/text_renderer"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/texture"
 )
 
-target_link_libraries(main PRIVATE 
-    glfw 
-    ${OPENAL_LIBRARY} 
-    Freetype::Freetype 
-    dl
-)
+add_library(glad STATIC glad.c)
+
+add_subdirectory(src/ball_object)
+add_subdirectory(src/game)
+add_subdirectory(src/game_level)
+add_subdirectory(src/game_object)
+add_subdirectory(src/particle_generator)
+add_subdirectory(src/post_processor)
+add_subdirectory(src/power_up)
+add_subdirectory(src/resource_manager)
+add_subdirectory(src/shader)
+add_subdirectory(src/sprite_renderer)
+add_subdirectory(src/text_renderer)
+add_subdirectory(src/texture)
+add_subdirectory(src/main)
 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/textures" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/levels" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
